@@ -1,6 +1,6 @@
 import { numberFormatter } from '@Src/constants';
-import moment from 'moment';
 import { CHART_COLOR } from '@Container/models/Details/constants';
+import * as commonChartOptions from '@Container/models/Details/charts/common-chart-options';
 
 export default function lineChartOptions(title, color, currentDataset, referenceDataset) {
   const series = [
@@ -35,41 +35,14 @@ export default function lineChartOptions(title, color, currentDataset, reference
     });
   }
 
-  return {
+  const options = {
     color: [color],
-    tooltip: {
-      trigger: 'axis',
-    },
-    yAxis: [{
-      type: 'value',
-      boundaryGap: true,
-      axisLabel: {
-        fontSize: 9,
-        color: '#9b99a1',
-      },
-    }],
-    xAxis: [
-      {
-        type: 'time',
-        axisLabel: {
-          formatter: (value) => moment(+value).format('DD MMM HH.mm'),
-          fontSize: 10,
-          color: '#9b99a1',
-        },
-        axisTick: { show: false },
-        axisLine: { show: false },
-        splitLine: { show: false },
-
-      },
-    ],
-    grid: {
-      bottom: 0,
-      top: 16,
-      left: 0,
-      right: 64,
-      containLabel: true,
-    },
-
+    ...commonChartOptions.tooltipOptions(),
+    ...commonChartOptions.yAxisOptions.valueType(),
+    ...commonChartOptions.xAxisOptions.timeType(),
+    ...commonChartOptions.gridOptions.lineChart(),
     series,
   };
+
+  return options;
 }
